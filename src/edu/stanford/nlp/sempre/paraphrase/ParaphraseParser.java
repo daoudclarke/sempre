@@ -183,48 +183,57 @@ public class ParaphraseParser {
       }
     }
 
-    // Print features (note this is only with respect to the first correct, is NOT the gradient).
-    // Things are not printed if there is only partial compatability.
-    if (correct_i != -1 && correct != 1) {
-      ParaphraseDerivation trueDeriv = predictions.get(correct_i);
-      ParaphraseDerivation predDeriv = predictions.get(0);
-      HashMap<String, Double> featureDiff = new HashMap<>();
-      trueDeriv.incrementAllFeatureVector(+1, featureDiff); //TODO if features will go out of proof this needs to change
-      predDeriv.incrementAllFeatureVector(-1, featureDiff);
-      String heading = String.format("TopTrue (%d) - Pred (%d) = Diff", correct_i, 0);
-      FeatureVector.logFeatureWeights(heading, featureDiff, params);
+    // Print out all derivations
+    if (compatibilities != null) {
+	for (int i = 0; i < predictions.size(); i++) {
+	    ParaphraseDerivation deriv = predictions.get(i);
+	    LogInfo.logs("AllDerivations@%04d ;;; %s ;;; %f", i, deriv.toString(),
+			 compatibilities[i]);
+	}
     }
 
-    // Fully correct
-    for (int i = 0; i < predictions.size(); i++) {
-      ParaphraseDerivation deriv = predictions.get(i);
-      if (compatibilities != null && compatibilities[i] == 1) {
-        LogInfo.logs(
-                "True@%04d: %s [score=%s, prob=%s%s]", i, deriv.toString(),
-                Fmt.D(deriv.score), Fmt.D(probs[i]), compatibilities != null ? ", comp=" + Fmt.D(compatibilities[i]) : "");
-      }
-    }
-    // Partially correct
-    for (int i = 0; i < predictions.size(); i++) {
-      ParaphraseDerivation deriv = predictions.get(i);
-      if (compatibilities != null && compatibilities[i] > 0 && compatibilities[i] < 1) {
-        LogInfo.logs(
-                "Part@%04d: %s [score=%s, prob=%s%s]", i, deriv.toString(),
-                Fmt.D(deriv.score), Fmt.D(probs[i]), compatibilities != null ? ", comp=" + Fmt.D(compatibilities[i]) : "");
-      }
-    }
-    // Anything that's predicted.
-    for (int i = 0; i < predictions.size(); i++) {
-      ParaphraseDerivation deriv = predictions.get(i);
-      // Either print all predictions or this prediction is worse by some amount.
-      boolean print;
-      print = probs[i] >= probs[0] / 2 || i < 10;
-      if (print) {
-        LogInfo.logs(
-                "Pred@%04d: %s [score=%s, prob=%s%s]", i, deriv.toString(),
-                Fmt.D(deriv.score), Fmt.D(probs[i]), compatibilities != null ? ", comp=" + Fmt.D(compatibilities[i]) : "");
-      }
-    }
+    // // Print features (note this is only with respect to the first correct, is NOT the gradient).
+    // // Things are not printed if there is only partial compatability.
+    // if (correct_i != -1 && correct != 1) {
+    //   ParaphraseDerivation trueDeriv = predictions.get(correct_i);
+    //   ParaphraseDerivation predDeriv = predictions.get(0);
+    //   HashMap<String, Double> featureDiff = new HashMap<>();
+    //   trueDeriv.incrementAllFeatureVector(+1, featureDiff); //TODO if features will go out of proof this needs to change
+    //   predDeriv.incrementAllFeatureVector(-1, featureDiff);
+    //   String heading = String.format("TopTrue (%d) - Pred (%d) = Diff", correct_i, 0);
+    //   FeatureVector.logFeatureWeights(heading, featureDiff, params);
+    // }
+
+    // // Fully correct
+    // for (int i = 0; i < predictions.size(); i++) {
+    //   ParaphraseDerivation deriv = predictions.get(i);
+    //   if (compatibilities != null && compatibilities[i] == 1) {
+    //     LogInfo.logs(
+    //             "True@%04d: %s [score=%s, prob=%s%s]", i, deriv.toString(),
+    //             Fmt.D(deriv.score), Fmt.D(probs[i]), compatibilities != null ? ", comp=" + Fmt.D(compatibilities[i]) : "");
+    //   }
+    // }
+    // // Partially correct
+    // for (int i = 0; i < predictions.size(); i++) {
+    //   ParaphraseDerivation deriv = predictions.get(i);
+    //   if (compatibilities != null && compatibilities[i] > 0 && compatibilities[i] < 1) {
+    //     LogInfo.logs(
+    //             "Part@%04d: %s [score=%s, prob=%s%s]", i, deriv.toString(),
+    //             Fmt.D(deriv.score), Fmt.D(probs[i]), compatibilities != null ? ", comp=" + Fmt.D(compatibilities[i]) : "");
+    //   }
+    // }
+    // // Anything that's predicted.
+    // for (int i = 0; i < predictions.size(); i++) {
+    //   ParaphraseDerivation deriv = predictions.get(i);
+    //   // Either print all predictions or this prediction is worse by some amount.
+    //   boolean print;
+    //   print = probs[i] >= probs[0] / 2 || i < 10;
+    //   if (print) {
+    //     LogInfo.logs(
+    //             "Pred@%04d: %s [score=%s, prob=%s%s]", i, deriv.toString(),
+    //             Fmt.D(deriv.score), Fmt.D(probs[i]), compatibilities != null ? ", comp=" + Fmt.D(compatibilities[i]) : "");
+    //   }
+    // }
 
     eval.add("correct", correct);
     eval.add("oracle", correct_i != -1);
