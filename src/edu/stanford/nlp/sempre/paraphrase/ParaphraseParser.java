@@ -94,8 +94,13 @@ public class ParaphraseParser {
           ParaphraseDerivation paraphraseDerivation =
                   new ParaphraseDerivation(example.languageInfo,
                           paraEx,formulaGenerationInfo,fExtractor,params);
-          example.addPrediction(paraphraseDerivation);
-        numOfGeneratedQuestions++;
+
+	  // Only add examples where we got an answer
+	  ListValue list = (ListValue) paraphraseDerivation.value;
+	  if (list.values.size() > 0) {
+	      example.addPrediction(paraphraseDerivation);
+	      numOfGeneratedQuestions++;
+	  }
       }
       LogInfo.end_track();
     }
