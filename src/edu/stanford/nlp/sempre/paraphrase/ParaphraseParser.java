@@ -92,16 +92,16 @@ public class ParaphraseParser {
           fsComputer.computeSimilarity(paraEx, params);
 
 
-          ParaphraseDerivation paraphraseDerivation =
-                  new ParaphraseDerivation(example.languageInfo,
-                          paraEx,formulaGenerationInfo,fExtractor,params);
+	ParaphraseDerivation paraphraseDerivation =
+	    new ParaphraseDerivation(example.languageInfo,
+				     paraEx,formulaGenerationInfo,fExtractor,params);
 
 	  // Only add examples where we got an answer
-	  ListValue list = (ListValue) paraphraseDerivation.value;
-	  if (list.values.size() > 0) {
-	      example.addPrediction(paraphraseDerivation);
-	      numOfGeneratedQuestions++;
-	  }
+	ListValue list = (ListValue) paraphraseDerivation.value;
+	if (list.values.size() > 0) {
+	    example.addPrediction(paraphraseDerivation);
+	    numOfGeneratedQuestions++;
+	}
       }
       LogInfo.end_track();
     }
