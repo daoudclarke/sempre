@@ -5,7 +5,9 @@ trap 'pkill virtuoso' EXIT
     @sparqlserver=localhost:3093 \
     @domain=small \
     @cacheserver=local \
-    -ParaphraseLearner.numOfThreads 2
+    -ParaphraseLearner.numOfThreads 1 \
+    -ParaphraseParser.vsm false \
+    -ParaphraseParser.alignment false     
 
 pkill virtuoso
 echo 'Finished run on small dataset'

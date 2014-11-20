@@ -108,11 +108,17 @@ public class ParaphraseLearner {
     LogInfo.begin_track("Examples");
 
 
-    Parallelizer<ParsingExample> paral = new Parallelizer<>(opts.numOfThreads);
     ParsingExampleProcessor processor = new ParsingExampleProcessor(paraParser, params, prefix, updateWeights, totalEval); 
-    LogInfo.begin_threads();
-    paral.process(parsingExamples, processor);
-    LogInfo.end_threads();
+    if(opts.numOfThreads > 1) {
+	Parallelizer<ParsingExample> paral = new Parallelizer<>(opts.numOfThreads);
+	LogInfo.begin_threads();
+	paral.process(parsingExamples, processor);
+	LogInfo.end_threads();
+    } else {
+	for (int i=0; i<parsingExamples.size(); ++i) {
+	    processor.process(parsingExamples.get(i), i, 0);
+	}
+    }
 
     params.finalizeWeights();
 
