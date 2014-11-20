@@ -7,6 +7,7 @@ import edu.stanford.nlp.sempre.FeatureVector;
 import edu.stanford.nlp.sempre.FormulaGenerationInfo;
 import edu.stanford.nlp.sempre.FormulaRetriever;
 import edu.stanford.nlp.sempre.Params;
+import edu.stanford.nlp.sempre.ListValue;
 
 import fig.basic.Fmt;
 import fig.basic.LogInfo;
