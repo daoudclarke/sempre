@@ -1,7 +1,16 @@
 lib
 state
 test-output
+classes
+test.vdb
+trans_state
+tutorial.vdb
 *.cache
+*~
+
+sempre.jar
+*.log
+nohup.out
 
 virtuoso-opensource
 
