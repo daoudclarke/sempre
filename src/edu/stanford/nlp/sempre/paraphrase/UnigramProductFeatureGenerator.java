@@ -21,6 +21,7 @@ public class UnigramProductFeatureGenerator {
     }
 
     public void extractFeatures(ParaphraseExample example, ParaphraseDerivation derivation) {
+	example.ensureAnnotated();
 	List<String> sourceTokens = example.sourceInfo.tokens;
 	List<String> targetTokens = example.targetInfo.tokens;
 	for(int i=0; i<sourceTokens.size(); ++i) {
@@ -28,7 +29,7 @@ public class UnigramProductFeatureGenerator {
 		continue;
 	    }
 
-	    for(int j=0; j<targetTokens.size(); ++i) {
+	    for(int j=0; j<targetTokens.size(); ++j) {
 		if(stopwords.contains(targetTokens.get(j))) {
 		    continue;
 		}
