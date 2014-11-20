@@ -13,6 +13,7 @@ import edu.stanford.nlp.sempre.LanguageInfo;
 import edu.stanford.nlp.sempre.Params;
 import edu.stanford.nlp.sempre.Value;
 import edu.stanford.nlp.sempre.paraphrase.Aligner.Alignment;
+import edu.stanford.nlp.sempre.paraphrase.UnigramProductFeatureGenerator;
 import fig.basic.LispTree;
 import fig.basic.NumUtils;
 import fig.basic.StopWatchSet;
@@ -47,6 +48,8 @@ public class ParaphraseDerivation {
     //extract feature vector
     featureVector = new FeatureVector();
     fExtractor.extractParaphraseDerivationFeatures(this);
+    UnigramProductFeatureGenerator unigramGenerator = new UnigramProductFeatureGenerator();
+    unigramGenerator.extractFeatures(paraEx, this);
     //compute score - we can do this here since all features are extracted in the constructor
     scoreProofDeriv(params);
   }
