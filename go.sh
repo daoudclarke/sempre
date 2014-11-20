@@ -46,7 +46,9 @@ trap "pkill virtuoso" SIGHUP SIGINT SIGTERM
     @sparqlserver=localhost:3093 \
     @domain=webquestions \
     @cacheserver=local \
-    -ParaphraseLearner.numOfThreads 8
+    -ParaphraseLearner.numOfThreads 8 \
+    -ParaphraseParser.vsm false \
+    -ParaphraseParser.alignment false     
 
 pkill virtuoso
 
