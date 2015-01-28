@@ -125,22 +125,28 @@ public class Dataset {
   }
   
   private void splitDevFromTrain() {
-    // Split original training examples randomly into train and dev.
+    // Split original training examples after sorting alphabetically
     List<Example> origTrainExamples = allExamples.get("train");
     if (origTrainExamples != null) {
-      int split1 = (int) (opts.trainFrac * origTrainExamples.size());
-      int split2 = (int) ((1 - opts.devFrac) * origTrainExamples.size());
-      int[] perm = SampleUtils.samplePermutation(opts.splitRandom, origTrainExamples.size());
+      // Sort by the query utterance
+      Collections.sort(origTrainExamples, new Comparator<Example>() {
+	      public int compare(Example o1, Example o2) {
+		  return o1.utterance.compareTo(o2.utterance);
+	      }
+	  });
 
+      LogInfo.logs("After sorting, first utterance: %s", origTrainExamples.get(0).utterance);
       List<Example> trainExamples = new ArrayList<Example>();
       allExamples.put("train", trainExamples);
       List<Example> devExamples = allExamples.get("dev");
       if (devExamples == null)
         allExamples.put("dev", devExamples = new ArrayList<Example>());
+      int split1 = (int) (opts.trainFrac * origTrainExamples.size());
+      int split2 = (int) ((1 - opts.devFrac) * origTrainExamples.size());
       for (int i = 0; i < split1; i++)
-        trainExamples.add(origTrainExamples.get(perm[i]));
+        trainExamples.add(origTrainExamples.get(i));
       for (int i = split2; i < origTrainExamples.size(); i++)
-        devExamples.add(origTrainExamples.get(perm[i]));
+        devExamples.add(origTrainExamples.get(i));
     }
   }
   
