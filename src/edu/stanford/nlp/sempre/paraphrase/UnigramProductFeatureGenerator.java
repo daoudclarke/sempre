@@ -6,6 +6,7 @@ import edu.stanford.nlp.sempre.paraphrase.ParaphraseDerivation;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import fig.basic.LogInfo;
 
 
 public class UnigramProductFeatureGenerator {
@@ -21,6 +22,7 @@ public class UnigramProductFeatureGenerator {
     }
 
     public void extractFeatures(ParaphraseExample example, ParaphraseDerivation derivation) {
+	LogInfo.begin_track("UnigramProductFeatureGenerator.extractFeatures");
 	example.ensureAnnotated();
 	List<String> sourceTokens = example.sourceInfo.tokens;
 	List<String> targetTokens = example.targetInfo.tokens;
@@ -36,6 +38,7 @@ public class UnigramProductFeatureGenerator {
 		derivation.featureVector.add("UnigramProduct", sourceTokens.get(i) + ":" + targetTokens.get(j));
 	    }
 	}
+	LogInfo.end_track();
     }
     
 }
