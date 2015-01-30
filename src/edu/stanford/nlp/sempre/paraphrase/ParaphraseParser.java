@@ -98,10 +98,12 @@ public class ParaphraseParser {
 				     paraEx,formulaGenerationInfo,fExtractor,params);
 
 	// Only add examples where we got an answer
-	ListValue list = (ListValue) paraphraseDerivation.value;
-	if (list.values.size() > 0) {
-	    example.addPrediction(paraphraseDerivation);
-	    numOfGeneratedQuestions++;
+	if(pDerivation.value instanceof ListValue) {
+	    ListValue list = (ListValue) paraphraseDerivation.value;
+	    if (list.values.size() > 0) {
+		example.addPrediction(paraphraseDerivation);
+		numOfGeneratedQuestions++;
+	    }
 	}
       }
       LogInfo.end_track();

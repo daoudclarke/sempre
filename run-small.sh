@@ -4,7 +4,7 @@ trap 'pkill virtuoso' EXIT
 ./parasempre @mode=train \
     @sparqlserver=localhost:3093 \
     @domain=small \
-    @cacheserver=local \
+    @cacheserver=none \
     -ParaphraseLearner.numOfThreads 1 \
     -ParaphraseParser.vsm false \
     -ParaphraseParser.alignment false     
