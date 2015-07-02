@@ -1,5 +1,22 @@
 # SEMPRE: Semantic Parsing with Execution
 
+This is an experimental fork of Jonathan Berant et al's [original
+implementation](https://github.com/percyliang/sempre). The goal is to
+see whether we can use simpler features than the paraphrase ones used
+in Berant et al's paper. It turns out you can - here we just use the
+cartesian product of unigrams in the query and unigrams in the
+canonical utterance. The system is described in
+   
+    @inproceedings{clarke2015tensor,
+      author = {Daoud Clarke},
+      booktitle = {Conference on Intelligent Text Processing and
+        Computational Linguistics (CICLing)},
+      title = {Simple, Fast Semantic Parsing with a Tensor Kernel},
+      year = {2015},
+    }
+
+# Original documentation
+
 SEMPRE is a toolkit for training semantic parsers, which map natural language
 utterances to denotations (answers) via intermediate logical forms.  See
 TUTORIAL.md for a walkthrough of the system.
