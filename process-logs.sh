@@ -19,7 +19,7 @@
 #$ -q 'nlp-amd,serial.q,inf.q,eng-inf_parallel.q'
 
 # Define parallel environment for multicore processing
-#$ -pe openmp 8
+#$ -pe openmp 1
 
 # Send mail to. (Comma separated list)
 #$ -M dc34@sussex.ac.uk
@@ -37,21 +37,9 @@ module add jdk/1.7.0_51_openjdk
 
 java -version
 
-echo 'Beginning experiment'
+echo 'Beginning processing'
 
-trap "pkill virtuoso" SIGHUP SIGINT SIGTERM
+PYTHONPATH=../sexpdata/ python parselog.py trans_state/execs/12.exec/log
 
-./scripts/virtuoso start lib/freebase/93.exec/vdb 3093
-./parasempre @mode=train \
-    @sparqlserver=localhost:3093 \
-    @domain=webquestions \
-    @cacheserver=local \
-    @data=1 \
-    -ParaphraseLearner.numOfThreads 8 \
-    -ParaphraseParser.vsm false \
-    -ParaphraseParser.alignment false     
-
-pkill virtuoso
-
-echo 'Experiment complete'
+echo 'Processing complete'
 

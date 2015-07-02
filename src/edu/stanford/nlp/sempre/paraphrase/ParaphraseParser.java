@@ -7,6 +7,7 @@ import edu.stanford.nlp.sempre.FeatureVector;
 import edu.stanford.nlp.sempre.FormulaGenerationInfo;
 import edu.stanford.nlp.sempre.FormulaRetriever;
 import edu.stanford.nlp.sempre.Params;
+import edu.stanford.nlp.sempre.ListValue;
 
 import fig.basic.Fmt;
 import fig.basic.LogInfo;
@@ -35,6 +36,7 @@ public class ParaphraseParser {
     @Option(gloss="Whether to use the vsm model") public boolean vsm=true;
     @Option(gloss="Whether to use the alignment model") public boolean alignment=true;
     @Option(gloss="Whether to use the alignment model") public boolean baseline=false;
+      //    @Option(gloss="Whether to use cartesian product of unigram features") public boolean unigramProduct=false;
     @Option(gloss="Size of beam") public int beamSize=2000;
   }
   public static Options opts = new Options();
@@ -91,11 +93,18 @@ public class ParaphraseParser {
           fsComputer.computeSimilarity(paraEx, params);
 
 
-          ParaphraseDerivation paraphraseDerivation =
-                  new ParaphraseDerivation(example.languageInfo,
-                          paraEx,formulaGenerationInfo,fExtractor,params);
-          example.addPrediction(paraphraseDerivation);
-        numOfGeneratedQuestions++;
+	ParaphraseDerivation paraphraseDerivation =
+	    new ParaphraseDerivation(example.languageInfo,
+				     paraEx,formulaGenerationInfo,fExtractor,params);
+
+	// Only add examples where we got an answer
+	if(paraphraseDerivation.value instanceof ListValue) {
+	    ListValue list = (ListValue) paraphraseDerivation.value;
+	    if (list.values.size() > 0) {
+		example.addPrediction(paraphraseDerivation);
+		numOfGeneratedQuestions++;
+	    }
+	}
       }
       LogInfo.end_track();
     }
